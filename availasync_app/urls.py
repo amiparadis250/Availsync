@@ -20,6 +20,6 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-     path('avail/', include('Availsync.urls')),
+     path('', include('Availsync.urls')),
      path('', views.index, name='index'), 
 ]

@@ -1,0 +1,182 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 400px;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+        background-color: #ffffff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .container img {
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 20px;
+      }
+
+      h3 {
+        color: #02a3f7;
+        margin-bottom: 20px;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      input[type="text"],
+      input[type="email"],
+      input[type="password"],
+      input[type="file"] {
+        width: 90%;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 4px;
+        font-size: 16px;
+        border-top: 0px;
+        border-left: 0px;
+        border-right: 0px;
+        border-bottom: 2px solid #02a3f7;
+      }
+
+      input:focus {
+        border-color: #02a3f7;
+        outline: none;
+      }
+
+      button {
+        width: 100%;
+        padding: 10px;
+        background-color: #02a3f7;
+        color: #ffffff;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 10px;
+      }
+
+      button:hover {
+        background-color: #007acc;
+      }
+
+      .extras {
+        margin-top: 15px;
+        font-size: 14px;
+      }
+
+      .extras a {
+        color: #02a3f7;
+        text-decoration: none;
+      }
+
+      .extras a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <img
+        style="width: 80%; height: auto"
+        src="{% static 'images/image.png' %}"
+        alt="Availsync"
+      />
+      <h3>Create Your Account</h3>
+      <form action="{% url 'register' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <p>
+          <label for="firstname" style="display: block; text-align: left; margin-bottom: 5px;">First Name:</label>
+          <input
+            type="text"
+            name="firstname"
+            id="firstname"
+            placeholder="First Name"
+            required
+          />
+        </p>
+        <p>
+          <label for="lastname" style="display: block; text-align: left; margin-bottom: 5px;">Last Name:</label>
+          <input
+            type="text"
+            name="lastname"
+            id="lastname"
+            placeholder="Last Name"
+            required
+          />
+        </p>
+        <p>
+          <label for="email" style="display: block; text-align: left; margin-bottom: 5px;">Email Address:</label>
+          <input
+            type="email"
+            name="email"
+            id="email"
+            placeholder="Email Address"
+            required
+          />
+        </p>
+        <p>
+          <label for="password" style="display: block; text-align: left; margin-bottom: 5px;">Password:</label>
+          <input
+            type="password"
+            name="password"
+            id="password"
+            placeholder="Password"
+            required
+          />
+        </p>
+        <p>
+          <label for="confirm_password" style="display: block; text-align: left; margin-bottom: 5px;">Confirm Password:</label>
+          <input
+            type="password"
+            name="confirm_password"
+            id="confirm_password"
+            placeholder="Confirm Password"
+            required
+          />
+        </p>
+        <p>
+          <label for="profile_image" style="display: block; text-align: left; margin-bottom: 5px;">Profile Image:</label>
+          <input
+            type="file"
+            name="profile_image"
+            id="profile_image"
+            accept="image/*"
+          />
+        </p>
+        <button type="submit">Register</button>
+      </form>
+      {% if messages %}
+      <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      <div class="extras">
+        <span>Already have an account? </span>
+        <a href="{% url 'login' %}">Login here</a>
+      </div>
+    </div>
+  </body>
+</html>

@@ -15,11 +15,11 @@ class Command(BaseCommand):
             User.objects.create(
                 first_name=fake.first_name(),
                 last_name=fake.last_name(),
-                email=fake.email(),
+                username=fake.email(),
                 password='password123',  
                 phone=fake.phone_number(),
                 profile_image=fake.image_url(),
-                role='User',  # Example role
+                role='User', 
             )
         
         # Creating Institutions
@@ -28,7 +28,7 @@ class Command(BaseCommand):
             Institution.objects.create(
                 name=fake.company(),
                 address=fake.address(),
-                email=fake.company_email(),
+                username=fake.company_email(),
                 phone=fake.phone_number(),
                 totalstuffs=random.randint(5, 100),  # Random staff count
                 bio=fake.text(max_nb_chars=200),
@@ -37,13 +37,13 @@ class Command(BaseCommand):
             )
 
         # Creating Staff
-        self.stdout.write(self.style.SUCCESS('Creating Staff...'))
-        for _ in range(15):  # Number of staff to create
+        # self.stdout.write(self.style.SUCCESS('Creating Staff...'))
+        # for _ in range(15):  # Number of staff to create
             institution = random.choice(Institution.objects.all())  # Randomly assign to an institution
             Staff.objects.create(
                 firstname=fake.first_name(),
                 lastname=fake.last_name(),
-                email=fake.email(),
+                username=fake.email(),
                 password='password123',  # You can hash passwords if needed
                 phone=fake.phone_number(),
                 profile_image=fake.image_url(),
