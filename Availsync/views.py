@@ -31,7 +31,7 @@ def login_view(request):
         if user is not None:
             # Successful login
             login(request, user)
-            return redirect('home')  
+            return redirect('dashboard')  
         else:
             # Invalid credentials
             messages.error(request, 'Invalid username or password.')
@@ -64,12 +64,22 @@ def Dashboard(request):
         count=Count('id')
     ).order_by('month')
     
+    # Login Trends (number of logins per month)
+    login_trends = User.objects.annotate(
+        month=ExtractMonth('last_login')
+    ).values('month').annotate(
+        count=Count('id')
+    ).order_by('month')
+
     # Initialize counts for all months
     user_counts = {str(i): 0 for i in range(1, 13)}
+    login_counts = {str(i): 0 for i in range(1, 13)}
     
     # Update with actual counts
     for trend in user_trends:
         user_counts[str(trend['month'])] = trend['count']
+    for trend in login_trends:
+        login_counts[str(trend['month'])] = trend['count']
 
     context = {
         'total_users': total_users,
@@ -77,27 +87,29 @@ def Dashboard(request):
         'total_staffs': total_staffs,
         'active_users': active_users,
         'user_counts': json.dumps(user_counts),  # Pass the data as JSON
+        'login_counts': json.dumps(login_counts),  # Pass login data as JSON
     }
-    
+
     return render(request, 'dashboard.html', context)
 
-def admin_staffs(request):
-    staffs = Staff.objects.select_related('institution', 'user').all()  # Use select_related for optimization
-
-    context = {'staffs': staffs}
-    
-    return render(request, 'adminstaff.html', context)
-
+@login_required
 def admin_users(request):
     users = User.objects.all()  # Fetch all users
 
     context = {'users': users}
     
     return render(request, 'adminusers.html', context)
-
+@login_required
 def admin_Institutions(request):
     institutions = Institution.objects.all()  # Fetch all institutions
 
     context = {'institutions': institutions}
     
     return render(request, 'adminInstitutions.html', context)
+@login_required
+def admin_staffs(request):
+    staffs = Staff.objects.select_related('institution', 'user').all()  # Use select_related for optimization
+
+    context = {'staffs': staffs}
+    
+    return render(request, 'adminstaff.html', context)

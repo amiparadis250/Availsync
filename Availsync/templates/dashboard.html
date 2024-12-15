@@ -14,25 +14,25 @@
     <nav>
         <div class="logo-name">
             <div class="logo-image">
-               <img src="{% static 'images/image.png' %}" alt="">
+                <img src="{% static 'images/image.png' %}" alt="">
             </div>
             <span class="logo_name">Availsync</span>
         </div>
         <div class="menu-items">
             <ul class="nav-links">
-                <li><a href="#">
+                <li><a href="{% url 'dashboard' %}">
                     <i class="uil uil-dashboard"></i>
                     <span class="link-name">Dashboard</span>
                 </a></li>
-                <li><a href="#">
+                <li><a href="{% url 'adminusers' %}">
                     <i class="uil uil-user"></i>
                     <span class="link-name">Users</span>
                 </a></li>
-                <li><a href="#">
+                <li><a href="{% url 'adminInstitutions' %}">
                     <i class="uil uil-building"></i>
                     <span class="link-name">Institutions</span>
                 </a></li>
-                <li><a href="#">
+                <li><a href="{% url 'adminstaff' %}">
                     <i class="uil uil-users-alt"></i>
                     <span class="link-name">Staffs</span>
                 </a></li>
@@ -98,7 +98,7 @@
                     </div>
                 </div>
 
-                <!-- User Trends Graph Section -->
+                <!-- User Registration Trends Graph Section -->
                 <div class="activity" style="margin-top: 50px;">
                     <div class="title">
                         <i class="uil uil-chart-line"></i>
@@ -108,22 +108,37 @@
                         <canvas id="userTrendsChart"></canvas>
                     </div>
                 </div>
+
+                <!-- Login Trends Graph Section -->
+                <div class="activity" style="margin-top: 50px;">
+                    <div class="title">
+                        <i class="uil uil-chart-line"></i>
+                        <span class="text">Login Trends</span>
+                    </div>
+                    <div style="width: 100%; height: 400px; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
+                        <canvas id="loginTrendsChart"></canvas>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     <script>
         const ctx = document.getElementById('userTrendsChart').getContext('2d');
+        const ctxLogin = document.getElementById('loginTrendsChart').getContext('2d');
         
         // Parse the JSON data from Django
         const userCounts = {{ user_counts|safe }};
+        const loginCounts = {{ login_counts|safe }};
         
-        // Prepare data for the chart
         const months = ['January', 'February', 'March', 'April', 'May', 'June', 
-                       'July', 'August', 'September', 'October', 'November', 'December'];
-        const userData = months.map((_, index) => userCounts[String(index + 1)] || 0);
+                        'July', 'August', 'September', 'October', 'November', 'December'];
 
-        // Create the chart
+        // Prepare data for the charts
+        const userData = months.map((_, index) => userCounts[String(index + 1)] || 0);
+        const loginData = months.map((_, index) => loginCounts[String(index + 1)] || 0);
+
+        // Create the chart for user registration trends
         new Chart(ctx, {
             type: 'line',
             data: {
@@ -148,26 +163,47 @@
                 scales: {
                     y: {
                         beginAtZero: true,
-                        ticks: {
-                            stepSize: 10
-                        }
+                        ticks: { stepSize: 10 }
                     }
                 },
                 plugins: {
-                    title: {
-                        display: true,
-                        text: 'User Registration Trends',
-                        font: {
-                            size: 16
-                        }
-                    },
-                    legend: {
-                        position: 'bottom'
+                    title: { display: true, text: 'User Registration Trends' },
+                    legend: { position: 'bottom' }
+                }
+            }
+        });
+
+        // Create the chart for login trends
+        new Chart(ctxLogin, {
+            type: 'line',
+            data: {
+                labels: months,
+                datasets: [{
+                    label: 'Logins per Month',
+                    data: loginData,
+                    borderColor: '#FF5733',
+                    backgroundColor: 'rgba(255, 87, 51, 0.1)',
+                    tension: 0.4,
+                    fill: true,
+                    pointBackgroundColor: '#FF5733',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2,
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { stepSize: 10 }
                     }
                 },
-                interaction: {
-                    intersect: false,
-                    mode: 'index'
+                plugins: {
+                    title: { display: true, text: 'Login Trends' },
+                    legend: { position: 'bottom' }
                 }
             }
         });
