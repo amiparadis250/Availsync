@@ -1,0 +1,150 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <title>Institutions Dashboard</title>
+    <style>
+        /* Additional Table Styling */
+        .institutions-table {
+            width: 100%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .institutions-table thead {
+            background-color: #4CAF50;
+            color: #fff;
+            text-align: left;
+        }
+
+        .institutions-table th, .institutions-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .institutions-table tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .institutions-table tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        h1 {
+            margin-top: 20px;
+            font-size: 24px;
+            text-align: center;
+            color: #333;
+        }
+
+        .content { 
+            margin-left: 250px; 
+            padding: 20px; 
+            background-color: #f4f4f4; 
+            min-height: 100vh; 
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <nav>
+        <div class="logo-name">
+            <div class="logo-image">
+               <img src="{% static 'images/image.png' %}" alt="">
+            </div>
+            <span class="logo_name">Availsync</span>
+        </div>
+        <div class="menu-items">
+            <ul class="nav-links">
+                <li><a href="#">
+                    <i class="uil uil-dashboard"></i>
+                    <span class="link-name">Dashboard</span>
+                </a></li>
+                <li><a href="#">
+                    <i class="uil uil-user"></i>
+                    <span class="link-name">Users</span>
+                </a></li>
+                <li><a href="#">
+                    <i class="uil uil-building"></i>
+                    <span class="link-name">Institutions</span>
+                </a></li>
+                <li><a href="#">
+                    <i class="uil uil-users-alt"></i>
+                    <span class="link-name">Staffs</span>
+                </a></li>
+                <li><a href="#">
+                    <i class="uil uil-plus-circle"></i>
+                    <span class="link-name">Add Institutions</span>
+                </a></li>
+                <li><a href="#">
+                    <i class="uil uil-user-plus"></i>
+                    <span class="link-name">Add Staff</span>
+                </a></li>
+            </ul>
+            
+            <ul class="logout-mode">
+                <li><a href="#">
+                    <i class="uil uil-signout"></i>
+                    <span class="link-name">Logout</span>
+                </a></li>
+                <li class="mode">
+                    <a href="#">
+                        <i class="uil uil-moon"></i>
+                        <span class="link-name">Dark Mode</span>
+                    </a>
+                    <div class="mode-toggle">
+                      <span class="switch"></span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="content">
+        <h1>Institutions List</h1>
+        <table class="institutions-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Total Staffs</th>
+                    <th>Working Days</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                {% for institution in institutions %}
+                    <tr>
+                        <td>{{ institution.name }}</td>
+                        <td>{{ institution.address }}</td>
+                        <td>{{ institution.username }}</td>
+                        <td>{{ institution.phone }}</td>
+                        <td>{{ institution.totalstuffs }}</td>
+                        <td>{{ institution.working_days }}</td>
+                        
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="7" style="text-align: center;">No institution records available.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="{% static 'javascript/dashboard.js' %}"></script>
+</body>
+</html>

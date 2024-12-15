@@ -7,5 +7,8 @@ urlpatterns = [
     path('register/', views.Register, name='register'),
     path('availabilitychecker/', views.Checker, name='availabilitychecker'),
     path('dashboard/', views.Dashboard, name='availabilitychecker'),
+    path('dashboard/staff/', views.admin_staffs, name='adminstaff'),
+    path('dashboard/users/', views.admin_users, name='adminusers'),
+    path('dashboard/institutions/', views.admin_Institutions, name='adminInstitutions'),
     
 ]

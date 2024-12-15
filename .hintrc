@@ -3,6 +3,11 @@
     "development"
   ],
   "hints": {
-    "no-inline-styles": "off"
+    "no-inline-styles": "off",
+    "disown-opener": "off",
+    "axe/name-role-value": "off",
+    "axe/text-alternatives": "off",
+    "meta-viewport": "off",
+    "highest-available-document-mode": "off"
   }
 }

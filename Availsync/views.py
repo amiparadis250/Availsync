@@ -3,6 +3,8 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth import get_user_model
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from .models import Staff
+from .models import Institution
 
 # Get the custom user model
 User = get_user_model()
@@ -43,3 +45,24 @@ def Checker(request):
 @login_required
 def Dashboard(request):
     return render(request, 'dashboard.html')
+
+def admin_staffs(request):
+    staffs = Staff.objects.select_related('institution', 'user').all()  # Use select_related for optimization
+
+   
+    context = {'staffs': staffs}
+    
+    return render(request, 'adminstaff.html', context)
+
+def admin_users(request):
+    users = User.objects.all()  # Fetch all users
+
+    context = {'users': users}
+    
+    return render(request, 'adminusers.html', context)
+def admin_Institutions(request):
+    institutions = Institution.objects.all()  # Fetch all institutions
+
+    context = {'institutions': institutions}
+    
+    return render(request, 'adminInstitutions.html', context)
