@@ -130,4 +130,8 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # settings.py
-AUTH_USER_MODEL = 'Availsync.User'  # Replace 'yourapp' with your actual app name
+AUTH_USER_MODEL = 'Availsync.User'  
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'Availsync/static/media') 

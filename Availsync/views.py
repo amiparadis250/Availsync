@@ -130,6 +130,7 @@ def admin_staffs(request):
 def dashboard_staffs(request, user_id):
     # Use the user_id to fetch the user object
     user = get_object_or_404(User, id=user_id)
+    
 
     # Add the user to the context
     context = {'user': user}

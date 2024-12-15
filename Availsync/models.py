@@ -29,10 +29,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    username = models.EmailField(unique=True)  # username is email
+    username = models.EmailField(unique=True)  
     password = models.CharField(max_length=100)
     phone = models.CharField(max_length=15)
-    profile_image = models.CharField(max_length=200)
+    profile_image = models.ImageField(upload_to='', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     role = models.CharField(max_length=20)
@@ -72,10 +72,10 @@ class Institution(models.Model):
 
 class Staff(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    workdescription = models.CharField(max_length=200)  # Staff-specific field
-    institution = models.ForeignKey(Institution, on_delete=models.CASCADE)  # Staff's institution
-    status = models.CharField(max_length=20)  # Staff status (e.g., active, inactive)
-    profile_image = models.ImageField(upload_to='profile_images/', null=True, blank=True)  # Staff profile image
+    workdescription = models.CharField(max_length=200)  
+    institution = models.ForeignKey(Institution, on_delete=models.CASCADE)  
+    status = models.CharField(max_length=20) 
+    profile_image = models.ImageField(upload_to='', null=True, blank=True)  
     user_account = models.OneToOneField(
      settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True
     )
