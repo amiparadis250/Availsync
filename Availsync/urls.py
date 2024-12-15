@@ -10,8 +10,6 @@ urlpatterns = [
     path('dashboard/staff/', views.admin_staffs, name='adminstaff'),
     path('dashboard/users/', views.admin_users, name='adminusers'),
     path('dashboard/institutions/', views.admin_Institutions, name='adminInstitutions'),
-    path('dashboard/<str:user_id>/', views.dashboard_staffs, name='adminstaff'),
-
-
+    path('dashboard/<str:user_id>/', views.dashboard_staffs, name='StaffDashboard'),
     
 ]

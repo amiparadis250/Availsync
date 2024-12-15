@@ -26,14 +26,23 @@ def login_view(request):
         username = request.POST.get('username')  # Email as username
         password = request.POST.get('password')  # Password field
 
-        # Authenticate with the custom user model
+        # Authenticate the user with the custom user model
         user = authenticate(request, username=username, password=password)
-        print(user,'----------------------------------------------------------------')
-        
+        print(user, '----------------------------------------------------------------')
+
         if user is not None:
             # Successful login
             login(request, user)
-            return redirect('dashboard')  
+
+            # Check the role of the user and redirect accordingly
+            if user.role == 'Admin':  # If role is admin, redirect to admin dashboard
+                return redirect('dashboard')  # Admin redirects to the admin dashboard
+            elif user.role == 'Staff':  # If role is staff, redirect to the staff dashboard
+                 return redirect('StaffDashboard', user_id=user.id)  # Staff redirects to their dashboard
+            else:
+                # If the role is not admin or staff, redirect to the home page
+                return redirect('home')  # Redirect to home page for other roles
+
         else:
             # Invalid credentials
             messages.error(request, 'Invalid username or password.')
@@ -119,10 +128,10 @@ def admin_staffs(request):
 
 
 def dashboard_staffs(request, user_id):
-    # Use the user_id to fetch the user object (or your custom user model)
+    # Use the user_id to fetch the user object
     user = get_object_or_404(User, id=user_id)
 
-    # Add the user to the context (or you can use custom fields like staff if needed)
+    # Add the user to the context
     context = {'user': user}
 
     return render(request, 'staffdashboard.html', context)
