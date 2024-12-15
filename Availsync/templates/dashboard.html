@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-acaXy71u+d72p7RV5I3G8j+3F91rWk8eG7pD7mQIVX9+RO+z8Eqj8/F+nU9jzG9UfpdXphZWboFfH1U4zFHEng==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            display: flex;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            position: fixed;
+            height: 100%;
+            padding-top: 20px;
+            transition: all 0.3s ease;
+        }
+        .sidebar.minimized {
+            width: 80px;
+        }
+        .sidebar h2 {
+            color: #ecf0f1;
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 30px;
+            transition: opacity 0.3s ease;
+        }
+        .sidebar.minimized h2 {
+            opacity: 0;
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            width: 100%;
+            padding: 15px 20px;
+            text-align: left;
+            transition: all 0.3s ease;
+        }
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #ecf0f1;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        .sidebar ul li a i {
+            margin-right: 10px;
+        }
+        .sidebar ul li:hover {
+            background-color: #34495e;
+            cursor: pointer;
+        }
+        .sidebar.minimized ul li a {
+            justify-content: center;
+        }
+        .sidebar.minimized ul li a span {
+            display: none;
+        }
+        .sidebar-toggle {
+            position: absolute;
+            top: 10px;
+            right: -15px;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            border: 1px solid #ecf0f1;
+            padding: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .main-content {
+            margin-left: 250px;
+            flex: 1;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        .main-content.minimized {
+            margin-left: 80px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 {
+            font-size: 28px;
+            color: #4a4a4a;
+        }
+        .profile {
+            display: flex;
+            align-items: center;
+        }
+        .profile img {
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .search-bar {
+            margin: 20px 0;
+        }
+        .search-bar input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .tabs {
+            display: flex;
+            margin: 20px 0;
+        }
+        .tabs button {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background-color: #fff;
+            border-bottom: 2px solid #ddd;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .tabs button.active {
+            border-bottom: 2px solid #4a4a4a;
+        }
+        .cards {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .card {
+            background-color: #fff;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: calc(33.333% - 20px);
+            margin: 10px;
+            text-align: center;
+        }
+        .card img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+        .card h3 {
+            font-size: 20px;
+            color: #4a4a4a;
+            margin: 10px 0;
+        }
+        .card p {
+            color: #888;
+        }
+        .card button {
+            padding: 10px;
+            border: none;
+            background-color: #4a4a4a;
+            color: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar" id="sidebar">
+            <h2>Availsync</h2>
+            <ul>
+                <li><a href="#"><i class="fas fa-users"></i><span> Users</span></a></li>
+                <li><a href="#"><i class="fas fa-university"></i><span> Institutions</span></a></li>
+                <li><a href="#"><i class="fas fa-user-md"></i><span> All Staff</span></a></li>
+                <li><a href="#"><i class="fas fa-sign-out-alt"></i><span> Logout</span></a></li>
+            </ul>
+            <div class="sidebar-toggle" id="sidebarToggle">
+                <i class="fas fa-angle-left"></i>
+            </div>
+        </div>
+        <div class="main-content" id="mainContent">
+            <div class="header">
+                <h1>Welcome, Admin</h1>
+                <div class="profile">
+                    <img src="https://via.placeholder.com/40" alt="Profile Picture">
+                    <span>Profile</span>
+                </div>
+            </div>
+            <div class="search-bar">
+                <input type="text" placeholder="Search...">
+            </div>
+            <div class="tabs">
+                <button class="active">All</button>
+                <button>Available</button>
+                <button>Absent</button>
+            </div>
+            <div class="cards">
+                <div class="card">
+                    <img src="https://via.placeholder.com/100" alt="Staff Picture">
+                    <h3>Dr. Sonia Kabwa</h3>
+                    <p>Land Manager</p>
+                    <button>View</button>
+                </div>
+                <div class="card">
+                    <img src="https://via.placeholder.com/100" alt="Staff Picture">
+                    <h3>Dr. Constante M.</h3>
+                    <p>Land Manager</p>
+                    <button>View</button>
+                </div>
+                <!-- Add more cards as needed -->
+            </div>
+        </div>
+    </div>
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('minimized');
+            mainContent.classList.toggle('minimized');
+            if (sidebar.classList.contains('minimized')) {
+                sidebarToggle.innerHTML = '<i class="fas fa-angle-right"></i>';
+            } else {
+                sidebarToggle.innerHTML = '<i class="fas fa-angle-left"></i>';
+            }
+        });
+    </script>
+</body>
+</html>

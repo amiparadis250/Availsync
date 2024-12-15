@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Availability Checker</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+        }
+
+        .search-box {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        input[type="text"] {
+            width: 70%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px 15px;
+            margin-left: 10px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+
+        table th, table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 768px) {
+            input[type="text"] {
+                width: 60%;
+            }
+
+            button {
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Availability Checker</h1>
+        <div class="search-box">
+            <input type="text" id="institution" placeholder="Enter Institution Name">
+            <button id="search-button">Search</button>
+        </div>
+
+        <!-- Table for displaying worker information -->
+        <table id="results-table">
+            <thead>
+                <tr>
+                    <th>Worker Name</th>
+                    <th>Role</th>
+                    <th>Availability</th>
+                    <th>Phone</th>
+                    <th>Profile Picture</th>
+                    <th>Work Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Results will be dynamically added here -->
+                <tr>
+                    <td colspan="6" style="text-align: center;">No results yet. Search to see workers!</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Static data for demonstration purposes
+        const institutionsData = {
+            "Tech University": [
+                { 
+                    firstname: "Alice", 
+                    lastname: "Smith", 
+                    role: "Lecturer", 
+                    status: "Available", 
+                    phone: "123-456-7890", 
+                    profile_image: "https://via.placeholder.com/50", 
+                    workdescription: "Teaching Computer Science"
+                },
+                { 
+                    firstname: "Bob", 
+                    lastname: "Johnson", 
+                    role: "Administrator", 
+                    status: "Not Available", 
+                    phone: "123-456-7891", 
+                    profile_image: "https://via.placeholder.com/50", 
+                    workdescription: "Managing admin tasks"
+                }
+            ],
+            "Science Institute": [
+                { 
+                    firstname: "Charlie", 
+                    lastname: "Lee", 
+                    role: "Researcher", 
+                    status: "Available", 
+                    phone: "123-456-7892", 
+                    profile_image: "https://via.placeholder.com/50", 
+                    workdescription: "Conducting research on physics"
+                },
+                { 
+                    firstname: "Dana", 
+                    lastname: "White", 
+                    role: "Technician", 
+                    status: "Available", 
+                    phone: "123-456-7893", 
+                    profile_image: "https://via.placeholder.com/50", 
+                    workdescription: "Maintaining lab equipment"
+                }
+            ]
+        };
+
+        // DOM elements
+        const searchButton = document.getElementById('search-button');
+        const institutionInput = document.getElementById('institution');
+        const resultsTableBody = document.querySelector('#results-table tbody');
+
+        // Event listener for search button
+        searchButton.addEventListener('click', () => {
+            const institutionName = institutionInput.value.trim();
+
+            if (!institutionName) {
+                alert('Please enter an institution name.');
+                return;
+            }
+
+            // Check if static data exists for the entered institution name
+            if (institutionsData[institutionName]) {
+                const workers = institutionsData[institutionName];
+                resultsTableBody.innerHTML = '';  // Clear previous results
+
+                // Populate table with workers' data
+                workers.forEach(worker => {
+                    const row = `<tr>
+                        <td>${worker.firstname} ${worker.lastname}</td>
+                        <td>${worker.role}</td>
+                        <td>${worker.status}</td>
+                        <td>${worker.phone}</td>
+                        <td><img src="${worker.profile_image}" alt="Profile Image" style="width: 50px; height: 50px; object-fit: cover;"></td>
+                        <td>${worker.workdescription}</td>
+                    </tr>`;
+                    resultsTableBody.innerHTML += row;
+                });
+            } else {
+                // No workers found for this institution
+                resultsTableBody.innerHTML = `<tr><td colspan="6" style="text-align: center;">No workers found for this institution.</td></tr>`;
+            }
+        });
+    </script>
+</body>
+</html>

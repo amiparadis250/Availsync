@@ -230,12 +230,18 @@
                 grid-template-columns: repeat(2, 1fr);
                 gap: 20px;
             }
+            .right .card{
+                margin-bottom: 20px;
+                flex-basis: 100%;
+                border-radius: 20px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Your existing nav code remains the same -->
+        
         <div class="nav">
             <div class="logo">
                 <img src="{% static 'images/image.png' %}" alt="Logo">
@@ -246,10 +252,13 @@
                     <li>Solutions</li>
                     <li>Enterprise</li>
                     <li>Organizations</li>
+                    <li>Availability checker</li>
                 </ul>
             </div>
+           
             <div class="Startbutton">
-                <button>Get Started</button>
+                <a href="{% url 'login' %}"><button>Get Started</button></a>
+                
             </div>
         </div>
 
@@ -258,7 +267,7 @@
             <div class="hero-text">
                 <h1 class="hero-title">Connecting Clients to Your Team's Real-Time Availability</h1>
                 <p class="hero-description">Availsync is our all-in-one solution, putting real-time availability at your fingertips and enhancing your experience with every visit</p>
-                <button class="cta-button">Get Started</button>
+               <a href="{% url 'login' %}"><button class="cta-button">Get Started</button></a> 
 
                 <div class="client-logos">
                     <img src="{% static 'images/irembo.png' %}" alt="TrendyDev">
@@ -273,7 +282,7 @@
             <div class="hero-image">
                 <div class="dashboard-preview">
                     <div class="dashboard-content">
-                        <!-- You can add more detailed dashboard elements here -->
+                        
                         <img src="{% static 'images/dashboard.png' %}" alt="Dashboard Preview" style="width: 100%; height: auto;">
                     </div>
                 </div>
@@ -284,20 +293,148 @@
                 <div class="floating-icon icon-4">🎯</div>
             </div>
         </div>
-        <div class="staffglance" style="display: flex; flex-direction: row;">
-            <div  style="width: 60%;">
-             <h2>See Staff Availability at a Glance</h2>
-             <p>With pangaNeza, quickly access real-time information about staff presence and 
-                availability, making it easy for clients to plan their visits effectively</p>
+        <div class="staff-glance" style="display: flex; flex-wrap: wrap; align-items: center; gap: 20px;  padding: 40px;">
+            <!-- Left Section -->
+            <div style="flex: 1;position: relative;top: -60px; left: 40px;">
+                <h2>See Staff Availability at a Glance</h2>
+                <p>
+                    With pangaNeza, quickly access real-time information about staff presence and 
+                    availability, making it easy for clients to plan their visits effectively.
+                </p>
+                <ul style="list-style: none; padding: 0; margin: 20px 0;">
+                    <li style="margin-bottom: 10px;">
+                        <img src="{% static 'images/redtick.png' %}" alt="Red Tick" style="vertical-align: middle; margin-right: 10px;">
+                        Easily view up-to-date staff availability so clients always know who's in the office.
+                    </li>
+                    <li style="margin-bottom: 10px;">
+                        <img src="{% static 'images/nicetick.png' %}" alt="Green Tick" style="vertical-align: middle; margin-right: 10px;">
+                        Provide clients with accurate, real-time information to reduce wait times and improve satisfaction.
+                    </li>
+                    <li style="margin-bottom: 10px;">
+                        <img src="{% static 'images/blue.png' %}" alt="Blue Tick" style="vertical-align: middle; margin-right: 10px;">
+                        Streamline staff management and ensure smooth interactions between clients and staff.
+                    </li>
+                </ul>
             </div>
-            <p><img src="{% static 'images/redtick.png' %}" alt="Staff Glance">Easily view up-to-date staff availability so clients always know who's in the office.</p>
-            <p><img src="{% static 'images/nicetick.png' %}" alt="Staff Glance">Easily view up-to-date staff availability so clients always know who's in the office.</p>
-            <p><img src="{% static 'images/blue.png' %}" alt="Staff Glance">Easily view up-to-date staff availability so clients always know who's in the office.</p>
-            <div style="width: 40%;">
-                <img src="{% static 'images/screen.png' %}" alt="Staff Glance" style="width: 80%; height: auto;">
+            
+            <!-- Right Section -->
+            <div style="flex: 1; min-width: 300px; text-align: center;">
+                <img src="{% static 'images/screen.png' %}" alt="Staff Glance" style="max-width: 80%; height: auto;">
             </div>
-
         </div>
+        <div class="services" style="display: flex; flex-wrap: wrap; justify-content: space-between; margin: 40px;">
+            <!-- Left Section -->
+            <div class="left" style="flex: 1 1 70%; margin-bottom: 20px;">
+                <h1 style="font-size: 2rem; margin-bottom: 20px;">Make Staff Availability Effortless and Accessible</h1>
+                <p style="font-size: 1rem; line-height: 1.5; color: #555;">
+                    Enable organizations to provide clients with real-time staff availability, 
+                    helping them plan visits efficiently and enhancing their experience.
+                </p>
+            </div>
+        
+            <!-- Right Section -->
+            <div class="right" style="flex: 1 1 60%; display: flex;  gap: 20px;">
+                <!-- Card 1 -->
+                <div class="card" style="flex: 1 1 calc(50% - 20px); padding: 40px; background: #fff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); text-align: center;">
+                    <img src="{% static 'images/icon1.png' %}" alt="Instant Availability" style="width: 50px; margin-bottom: 15px;">
+                    <h2 style="font-size: 1.25rem; margin-bottom: 10px; color: #333;">Instant Staff Availability</h2>
+                    <p style="font-size: 0.95rem; color: #555;">Keep clients informed with real-time staff presence details.</p>
+                </div>
+        
+                <!-- Card 2 -->
+                <div class="card" style="flex: 1 1 calc(50% - 20px); padding: 40px; background: #fff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); text-align: center;">
+                    <img src="{% static 'images/icon2.png' %}" alt="Streamlined Communication" style="width: 50px; margin-bottom: 15px;">
+                    <h2 style="font-size: 1.25rem; margin-bottom: 10px; color: #333;">Streamlined Communication</h2>
+                    <p style="font-size: 0.95rem; color: #555;">Keep clients informed with real-time staff presence details.</p>
+                </div>
+        
+                <!-- Card 3 -->
+                <div class="card" style="flex: 1 1 calc(50% - 20px); padding: 40px; background: #fff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); text-align: center;">
+                    <img src="{% static 'images/icon3.png' %}" alt="Reliable Access" style="width: 50px; margin-bottom: 15px;">
+                    <h2 style="font-size: 1.25rem; margin-bottom: 10px; color: #333;">Reliable Access Anywhere</h2>
+                    <p style="font-size: 0.95rem; color: #555;">Accessible on any device, so clients can check staff availability anytime.</p>
+                </div>
+        
+                <!-- Card 4 -->
+                <div class="card" style="flex: 1 1 calc(50% - 20px); padding: 40px; background: #fff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); text-align: center;">
+                    <img src="{% static 'images/icon2.png' %}" alt="Time-Saving Management" style="width: 50px; margin-bottom: 15px;">
+                    <h2 style="font-size: 1.25rem; margin-bottom: 10px; color: #333;">Time-Saving Management</h2>
+                    <p style="font-size: 0.95rem; color: #555;">Reduce unnecessary client visits by providing availability info before they arrive.</p>
+                </div>
+            </div>
+        </div>
+        <!-- Footer Section -->
+<footer style="background-color: #0b0d14; color: #fff; padding: 40px 20px; font-family: Arial, sans-serif;">
+    <div style="max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 20px;">
+
+        <!-- Left Section: Logo and Tagline -->
+        <div style="flex: 1 1 250px;">
+            <h2 style="margin-bottom: 10px; font-size: 24px; font-weight: bold;">Availsync</h2>
+            <p style="font-size: 14px; color: #aaa;">Streamlined Availability, Right at Your Fingertips</p>
+        </div>
+
+        <!-- Our Services -->
+        <div style="flex: 1 1 150px;">
+            <h3 style="margin-bottom: 10px; font-size: 16px;">Our Services</h3>
+            <ul style="list-style: none; padding: 0; font-size: 14px; line-height: 1.8; color: #aaa;">
+                <li>Expand</li>
+                <li>Treach</li>
+                <li>Methods</li>
+                <li>Development</li>
+            </ul>
+        </div>
+
+        <!-- Quick Links -->
+        <div style="flex: 1 1 150px;">
+            <h3 style="margin-bottom: 10px; font-size: 16px;">Quick Links</h3>
+            <ul style="list-style: none; padding: 0; font-size: 14px; line-height: 1.8; color: #aaa;">
+                <li>Register</li>
+                <li>Start now</li>
+                <li>Payment Methods</li>
+                <li>Contact</li>
+            </ul>
+        </div>
+
+        <!-- Our Information -->
+        <div style="flex: 1 1 150px;">
+            <h3 style="margin-bottom: 10px; font-size: 16px;">Our Information</h3>
+            <ul style="list-style: none; padding: 0; font-size: 14px; line-height: 1.8; color: #aaa;">
+                <li>Return Policy</li>
+                <li>Privacy Policy</li>
+                <li>Site Map</li>
+                <li>Store Hours</li>
+            </ul>
+        </div>
+
+        <!-- Contacts -->
+        <div style="flex: 1 1 200px;">
+            <h3 style="margin-bottom: 10px; font-size: 16px;">Contacts</h3>
+            <p style="font-size: 14px; color: #aaa; line-height: 1.8;">
+                Work Time<br>
+                Monday-Friday<br>
+                11:00–9:00
+            </p>
+            <p style="font-size: 14px; color: #aaa;">
+                Address<br>
+                Kigali, Rwanda
+            </p>
+        </div>
+
     </div>
+
+    <!-- Bottom Section: Email Subscription -->
+    <div style="margin-top: 40px; text-align: center;">
+        <h2 style="font-size: 24px; margin-bottom: 20px;">Get Every Updates Form There</h2>
+        <form style="display: flex; justify-content: center; align-items: center; gap: 10px;">
+            <input type="email" placeholder="Enter your email address" style="padding: 10px; border-radius: 25px; border: none; width: 300px; max-width: 100%; font-size: 14px;">
+            <button type="submit" style="padding: 10px 20px; background-color: #fff; color: #333; border: none; border-radius: 25px; cursor: pointer; font-weight: bold;">
+                Start now
+            </button>
+        </form>
+    </div>
+</footer>
+
+        
+        
 </body>
 </html>

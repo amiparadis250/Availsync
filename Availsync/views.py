@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import get_user_model
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 # Get the custom user model
 User = get_user_model()
@@ -34,3 +35,11 @@ def login_view(request):
 # Register view (You can add registration logic here)
 def Register(request):
     return render(request, 'register.html')
+
+def Checker(request):
+    return render(request, 'availabilityChecker.html')
+
+# Dashboard view with login required
+@login_required
+def Dashboard(request):
+    return render(request, 'dashboard.html')
