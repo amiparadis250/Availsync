@@ -72,19 +72,21 @@ class Institution(models.Model):
 
 class Staff(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    firstname = models.CharField(max_length=100)
-    lastname = models.CharField(max_length=100)
-    username = models.EmailField(unique=True)
-    password = models.CharField(max_length=100)
-    phone = models.CharField(max_length=15)
-    profile_image = models.CharField(max_length=200)
-    role = models.CharField(max_length=20)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    workdescription = models.CharField(max_length=200)
-    institution = models.ForeignKey(Institution, on_delete=models.CASCADE)
-    status = models.CharField(max_length=20)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  # Updated to use custom user model
+    workdescription = models.CharField(max_length=200)  # Staff-specific field
+    institution = models.ForeignKey(Institution, on_delete=models.CASCADE)  # Staff's institution
+    status = models.CharField(max_length=20)  # Staff status (e.g., active, inactive)
+    profile_image = models.ImageField(upload_to='profile_images/', null=True, blank=True)  # Staff profile image
+    user_account = models.OneToOneField(
+     settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True
+    )
+
+    def __str__(self):
+        return (
+            f"{self.user_account.first_name} {self.user_account.role} "
+            f"{self.user_account.last_name} {self.user_account.phone} "
+            f"{self.user_account.password} ({self.user_account.username})"
+        )
 
     class Meta:
         db_table = 'staffs'
+

@@ -52,6 +52,7 @@
             background-color: #f4f4f4; 
             min-height: 100vh; 
         }
+        
     </style>
 </head>
 <body>
@@ -115,8 +116,7 @@
         <table class="staff-table">
             <thead>
                 <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
+                    <th>Full Name</th>
                     <th>Email</th>
                     <th>Phone</th>
                     <th>Role</th>
@@ -127,22 +127,21 @@
             <tbody>
                 {% for staff in staffs %}
                     <tr>
-                        <td>{{ staff.firstname }}</td>
-                        <td>{{ staff.lastname }}</td>
-                        <td>{{ staff.username }}</td>
-                        <td>{{ staff.phone }}</td>
-                        <td>{{ staff.role }}</td>
-                        <td>{{ staff.institution.name }}</td>
-                        <td>{{ staff.status }}</td>
+                        <td>{{ staff.user_account.first_name }} {{ staff.user_account.last_name }}</td>  <!-- Combined full name -->
+                        <td>{{ staff.user_account.username }}</td>  
+                        <td>{{ staff.user_account.phone }}</td>      
+                        <td>{{ staff.user_account.role }}</td>      
+                        <td>{{ staff.institution.name }}</td>       
+                        <td>{{ staff.status }}</td>                   
                     </tr>
-                   
                 {% empty %}
                     <tr>
-                        <td colspan="7">No staff records available.</td>
+                        <td colspan="6">No staff records available.</td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
+        
     </div>
 
     <!-- JavaScript -->

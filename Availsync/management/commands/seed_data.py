@@ -9,23 +9,30 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         fake = Faker()
 
-        # Creating Users
+        # Step 1: Create Users
         self.stdout.write(self.style.SUCCESS('Creating Users...'))
-        for _ in range(15):  # Change the range to the number of users you want to create
-            User.objects.create(
+        user_list = []  # Store created users for later use in Staff
+
+        for _ in range(15):  # Adjust number of users here
+            user = User.objects.create_user(
                 first_name=fake.first_name(),
                 last_name=fake.last_name(),
                 username=fake.email(),
-                password='password123',  
+                password='password123',  # Password hashing happens automatically
                 phone=fake.phone_number(),
                 profile_image=fake.image_url(),
-                role='User', 
+                role=random.choice(['Admin', 'Staff', 'User']),  # Assign random roles to users
             )
-        
-        # Creating Institutions
+            user_list.append(user)
+
+        self.stdout.write(self.style.SUCCESS(f'{len(user_list)} Users created successfully!'))
+
+        # Step 2: Create Institutions
         self.stdout.write(self.style.SUCCESS('Creating Institutions...'))
-        for _ in range(5):  # Number of institutions to create
-            Institution.objects.create(
+        institution_list = []  # Store created institutions for Staff association
+
+        for _ in range(5):  # Adjust number of institutions here
+            institution = Institution.objects.create(
                 name=fake.company(),
                 address=fake.address(),
                 username=fake.company_email(),
@@ -35,22 +42,24 @@ class Command(BaseCommand):
                 working_days="Monday to Friday",
                 working_hours="9AM - 5PM",
             )
+            institution_list.append(institution)
 
-        # Creating Staff
-        # self.stdout.write(self.style.SUCCESS('Creating Staff...'))
-        # for _ in range(15):  # Number of staff to create
-            institution = random.choice(Institution.objects.all())  # Randomly assign to an institution
+        self.stdout.write(self.style.SUCCESS(f'{len(institution_list)} Institutions created successfully!'))
+
+        # Step 3: Create Staff
+        self.stdout.write(self.style.SUCCESS('Creating Staff...'))
+
+        for user in user_list:  # Create staff for some users
+            institution = random.choice(institution_list)
+         
             Staff.objects.create(
-                firstname=fake.first_name(),
-                lastname=fake.last_name(),
-                username=fake.email(),
-                password='password123',  # You can hash passwords if needed
-                phone=fake.phone_number(),
-                profile_image=fake.image_url(),
-                role='Staff',
-                workdescription=fake.job(),
+                user_account=user,
                 institution=institution,
-                status='Active',
+                workdescription=fake.job(),
+                status=random.choice(['Active', 'Inactive']),
+                profile_image=None,  # Replace with a valid path if necessary
+                 # Assign the same role as the user
             )
 
+        self.stdout.write(self.style.SUCCESS('Staff created successfully!'))
         self.stdout.write(self.style.SUCCESS('Database seeded successfully!'))

@@ -10,6 +10,8 @@ from datetime import timedelta
 from django.db.models.functions import ExtractMonth
 from django.utils import timezone
 from django.db.models import Count
+from django.shortcuts import get_object_or_404
+
 
 # Get the custom user model
 User = get_user_model()
@@ -108,8 +110,19 @@ def admin_Institutions(request):
     return render(request, 'adminInstitutions.html', context)
 @login_required
 def admin_staffs(request):
-    staffs = Staff.objects.select_related('institution', 'user').all()  # Use select_related for optimization
+    staffs = Staff.objects.select_related('institution', 'user_account').all()# Use select_related for optimization
 
     context = {'staffs': staffs}
     
-    return render(request, 'adminstaff.html', context)
+    return render(request, 'adminstaff.html', context)   
+
+
+
+def dashboard_staffs(request, user_id):
+    # Use the user_id to fetch the user object (or your custom user model)
+    user = get_object_or_404(User, id=user_id)
+
+    # Add the user to the context (or you can use custom fields like staff if needed)
+    context = {'user': user}
+
+    return render(request, 'staffdashboard.html', context)
