@@ -6,7 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
-     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>Admin Dashboard Panel</title>
 </head>
 <body>
@@ -15,7 +16,6 @@
             <div class="logo-image">
                <img src="{% static 'images/image.png' %}" alt="">
             </div>
-
             <span class="logo_name">Availsync</span>
         </div>
         <div class="menu-items">
@@ -51,13 +51,11 @@
                     <i class="uil uil-signout"></i>
                     <span class="link-name">Logout</span>
                 </a></li>
-        
                 <li class="mode">
                     <a href="#">
                         <i class="uil uil-moon"></i>
                         <span class="link-name">Dark Mode</span>
                     </a>
-        
                     <div class="mode-toggle">
                       <span class="switch"></span>
                     </div>
@@ -69,13 +67,10 @@
     <section class="dashboard">
         <div class="top">
             <i class="uil uil-bars sidebar-toggle"></i>
-
             <div class="search-box">
                 <i class="uil uil-search"></i>
                 <input type="text" placeholder="Search here...">
             </div>
-            
-            <!--<img src="images/profile.jpg" alt="">-->
         </div>
 
         <div class="dash-content">
@@ -89,24 +84,94 @@
                     <div class="box box1">
                         <i class="uil uil-users-alt"></i>
                         <span class="text">Total Users</span>
-                        <span class="number">50,120</span>
+                        <span class="number">{{ total_users }}</span>
                     </div>
                     <div class="box box2">
                         <i class="uil uil-building"></i>
                         <span class="text">Total Institutions</span>
-                        <span class="number">20,120</span>
+                        <span class="number">{{ total_institutions }}</span>
                     </div>
                     <div class="box box3">
                         <i class="uil uil-user-check"></i>
                         <span class="text">Total Staffs</span>
-                        <span class="number">10,120</span>
+                        <span class="number">{{ total_staffs }}</span>
+                    </div>
+                </div>
+
+                <!-- User Trends Graph Section -->
+                <div class="activity" style="margin-top: 50px;">
+                    <div class="title">
+                        <i class="uil uil-chart-line"></i>
+                        <span class="text">User Registration Trends</span>
+                    </div>
+                    <div style="width: 100%; height: 400px; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
+                        <canvas id="userTrendsChart"></canvas>
                     </div>
                 </div>
             </div>
-
-            
         </div>
     </section>
+
+    <script>
+        const ctx = document.getElementById('userTrendsChart').getContext('2d');
+        
+        // Parse the JSON data from Django
+        const userCounts = {{ user_counts|safe }};
+        
+        // Prepare data for the chart
+        const months = ['January', 'February', 'March', 'April', 'May', 'June', 
+                       'July', 'August', 'September', 'October', 'November', 'December'];
+        const userData = months.map((_, index) => userCounts[String(index + 1)] || 0);
+
+        // Create the chart
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: months,
+                datasets: [{
+                    label: 'New Users per Month',
+                    data: userData,
+                    borderColor: '#4F46E5',
+                    backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                    tension: 0.4,
+                    fill: true,
+                    pointBackgroundColor: '#4F46E5',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2,
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 10
+                        }
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'User Registration Trends',
+                        font: {
+                            size: 16
+                        }
+                    },
+                    legend: {
+                        position: 'bottom'
+                    }
+                },
+                interaction: {
+                    intersect: false,
+                    mode: 'index'
+                }
+            }
+        });
+    </script>
 
     <script src="{% static 'javascript/dashboard.js' %}"></script>
 </body>
