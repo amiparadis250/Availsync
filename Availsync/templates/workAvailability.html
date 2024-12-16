@@ -90,24 +90,28 @@
         </div>
         <div class="menu-items">
             <ul class="nav-links">
-                
-                <li><a href="#">
+                <li><a href="{% url 'StaffDashboard' user.id %}">
                     <i class="uil uil-user"></i>
                     <span class="link-name">My Profile</span>
                 </a></li>
-                <li><a href="#">
+                
+                <li><a href="{% url 'availability_staffs' user.id %}">
                     <i class="uil uil-calendar-alt"></i>
                     <span class="link-name">Work Availability</span>
                 </a></li>
-                <li><a href="#">
+                
+                <li><a href="{% url 'workmates' user.id %}">
                     <i class="uil uil-users-alt"></i>
                     <span class="link-name">Work Mates</span>
                 </a></li>
-                <li><a href="#">
+                
+                <li><a href="{% url 'Institution_staff' user.id %}">
                     <i class="uil uil-building"></i>
                     <span class="link-name">Institutions</span>
                 </a></li>
             </ul>
+            
+            
             
             <ul class="logout-mode">
                 <li><a href="#">
