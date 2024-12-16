@@ -96,7 +96,7 @@
             <button id="search-button">Search</button>
         </div>
 
-        <!-- Table for displaying worker information -->
+      
         <table id="results-table">
             <thead>
                 <tr>
@@ -109,7 +109,7 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- Results will be dynamically added here -->
+            
                 <tr>
                     <td colspan="6" style="text-align: center;">No results yet. Search to see workers!</td>
                 </tr>
@@ -118,51 +118,7 @@
     </div>
 
     <script>
-        // Static data for demonstration purposes
-        const institutionsData = {
-            "Tech University": [
-                { 
-                    firstname: "Alice", 
-                    lastname: "Smith", 
-                    role: "Lecturer", 
-                    status: "Available", 
-                    phone: "123-456-7890", 
-                    profile_image: "https://via.placeholder.com/50", 
-                    workdescription: "Teaching Computer Science"
-                },
-                { 
-                    firstname: "Bob", 
-                    lastname: "Johnson", 
-                    role: "Administrator", 
-                    status: "Not Available", 
-                    phone: "123-456-7891", 
-                    profile_image: "https://via.placeholder.com/50", 
-                    workdescription: "Managing admin tasks"
-                }
-            ],
-            "Science Institute": [
-                { 
-                    firstname: "Charlie", 
-                    lastname: "Lee", 
-                    role: "Researcher", 
-                    status: "Available", 
-                    phone: "123-456-7892", 
-                    profile_image: "https://via.placeholder.com/50", 
-                    workdescription: "Conducting research on physics"
-                },
-                { 
-                    firstname: "Dana", 
-                    lastname: "White", 
-                    role: "Technician", 
-                    status: "Available", 
-                    phone: "123-456-7893", 
-                    profile_image: "https://via.placeholder.com/50", 
-                    workdescription: "Maintaining lab equipment"
-                }
-            ]
-        };
-
-        // DOM elements
+       
         const searchButton = document.getElementById('search-button');
         const institutionInput = document.getElementById('institution');
         const resultsTableBody = document.querySelector('#results-table tbody');
@@ -176,27 +132,33 @@
                 return;
             }
 
-            // Check if static data exists for the entered institution name
-            if (institutionsData[institutionName]) {
-                const workers = institutionsData[institutionName];
-                resultsTableBody.innerHTML = '';  // Clear previous results
+            
+            fetch(`/get-workers/?institution=${institutionName}`)
+                .then(response => response.json())
+                .then(data => {
+                    resultsTableBody.innerHTML = '';  
 
-                // Populate table with workers' data
-                workers.forEach(worker => {
-                    const row = `<tr>
-                        <td>${worker.firstname} ${worker.lastname}</td>
-                        <td>${worker.role}</td>
-                        <td>${worker.status}</td>
-                        <td>${worker.phone}</td>
-                        <td><img src="${worker.profile_image}" alt="Profile Image" style="width: 50px; height: 50px; object-fit: cover;"></td>
-                        <td>${worker.workdescription}</td>
-                    </tr>`;
-                    resultsTableBody.innerHTML += row;
+                    if (data.error) {
+                        resultsTableBody.innerHTML = `<tr><td colspan="6" style="text-align: center;">${data.error}</td></tr>`;
+                    } else {
+                        // Populate table with workers' data
+                        data.forEach(worker => {
+                            const row = `<tr>
+                                <td>${worker.firstname} ${worker.lastname}</td>
+                                
+                                <td>${worker.status}</td>
+                                <td>${worker.phone}</td>
+                                <td><img src="${worker.profile_image}" alt="Profile Image" style="width: 50px; height: 50px; object-fit: cover;"></td>
+                                <td>${worker.workdescription}</td>
+                            </tr>`;
+                            resultsTableBody.innerHTML += row;
+                        });
+                    }
+                })
+                .catch(error => {
+                    resultsTableBody.innerHTML = `<tr><td colspan="6" style="text-align: center;">Error fetching data.</td></tr>`;
+                    console.error(error);
                 });
-            } else {
-                // No workers found for this institution
-                resultsTableBody.innerHTML = `<tr><td colspan="6" style="text-align: center;">No workers found for this institution.</td></tr>`;
-            }
         });
     </script>
 </body>

@@ -10,6 +10,7 @@ from datetime import timedelta
 from django.db.models.functions import ExtractMonth
 from django.utils import timezone
 from django.db.models import Count
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 
 
@@ -55,6 +56,7 @@ def Register(request):
     return render(request, 'register.html')
 
 def Checker(request):
+    
     return render(request, 'availabilityChecker.html')
 
 # Dashboard view with login required
@@ -200,4 +202,21 @@ def Institution_staff(request,user_id):
     }
     return render(request, 'institutionsStaff.html', context)
      
-     
+def get_workers(request):
+    institution_name = request.GET.get('institution')
+    institution = Institution.objects.filter(name=institution_name).first()
+    
+    if institution:
+        workers = Staff.objects.filter(institution=institution)
+        workers_data = [{
+            'firstname': worker.user_account.first_name,
+            'lastname': worker.user_account.last_name,
+            'status': worker.status,
+            'phone': worker.user_account.phone,
+            'profile_image': worker.user_account.profile_image.url if worker.user_account.profile_image else 'https://via.placeholder.com/50',
+            'workdescription': worker.workdescription
+        } for worker in workers]
+
+        return JsonResponse(workers_data, safe=False)
+    else:
+        return JsonResponse({'error': 'Institution not found'}, status=404)    

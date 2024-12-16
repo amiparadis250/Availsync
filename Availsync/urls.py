@@ -14,5 +14,6 @@ urlpatterns = [
     path('dashboard/availability/<str:user_id>/', views.availability_staffs, name='availability_staffs'),
     path('dashboard/staff/<str:user_id>/', views.Workmates, name='workmates'),
     path('dashboard/institution/<str:user_id>/', views.Institution_staff, name='Institution_staff'),
+    path('get-workers/', views.get_workers, name='get_workers'),
     
 ]
