@@ -130,9 +130,14 @@ def admin_staffs(request):
 def dashboard_staffs(request, user_id):
     # Use the user_id to fetch the user object
     user = get_object_or_404(User, id=user_id)
+    staff = get_object_or_404(Staff, user_account=user)
+    institutions = Institution.objects.filter(staff=staff) 
+    first_institution = institutions.first() 
     
-
-    # Add the user to the context
-    context = {'user': user}
-
+    # Context to pass data to the template
+    context = {
+        'user': user,
+        'staff': staff,
+        'first_institution': first_institution, 
+    }
     return render(request, 'staffdashboard.html', context)

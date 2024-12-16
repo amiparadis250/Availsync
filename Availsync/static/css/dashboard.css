@@ -244,6 +244,7 @@ nav.close ~ .dashboard .top{
     max-width: 600px;
     width: 100%;
     margin: 0 30px;
+    left: -200px;
 }
 .top .search-box input{
     position: absolute;
@@ -257,6 +258,7 @@ nav.close ~ .dashboard .top{
     font-size: 15px;
     font-weight: 400;
     outline: none;
+    left: -200px;
 }
 .top .search-box i{
     position: absolute;

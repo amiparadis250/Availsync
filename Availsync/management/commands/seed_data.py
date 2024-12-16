@@ -18,7 +18,7 @@ class Command(BaseCommand):
                 first_name=fake.first_name(),
                 last_name=fake.last_name(),
                 username=fake.email(),
-                password='password123',  # Password hashing happens automatically
+                password='password123',  
                 phone=fake.phone_number(),
                 profile_image=fake.image_url(),
                 role=random.choice(['Admin', 'Staff', 'User']),  # Assign random roles to users
