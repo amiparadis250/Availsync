@@ -9,7 +9,77 @@
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>Admin Dashboard Panel</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+<style>
+     .availability-section {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            /* max-width: 400px; */
+            margin: 20px auto;
+            font-family: Arial, sans-serif;
+        }
+
+        .availability-section h3 {
+            color: #333;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .status-container {
+            display: flex;
+            flex-direction: column;
+            margin-top: 10px;
+        }
+
+        .status-container p {
+            margin: 0 0 10px;
+            font-size: 1em;
+            color: #666;
+        }
+
+        .status-container form {
+            display: flex;
+            align-items: center;
+        }
+
+        .status-container input[type="text"] {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+            flex: 1;
+            margin-right: 10px;
+        }
+
+        .status-container button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s;
+        }
+
+        .status-container button:hover {
+            background-color: #0056b3;
+        }
+
+        .status-container input[type="text"]:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+        .chart-container {
+            margin-top: 20px;
+            width: 80%;
+        }
+    </style>
+    
 <body>
     <nav>
         <div class="logo-name">
@@ -76,9 +146,66 @@
 
         </div>
 
+        <div class="dash-content">
+            <div class="availability-section">
+                <h3>Work Availability</h3>
+                <div class="status-container">
+                    <p><strong>Current Status:</strong> {{ staff.status|capfirst }}</p>
+                    <form method="POST" action="{% url 'availability_staffs' staff.user_account.id %}">
+                        {% csrf_token %}
+                        <input 
+                            type="text"
+                            name="status"
+                            id="status"
+                            value="{{ staff.status|lower }}"
+                            placeholder="Set Availability (Available/Not Available)"
+                            required
+                        />   
+                        <button type="submit">
+                            {% if staff.status == 'active' %}Set Inactive{% else %}Set Active{% endif %}
+                        </button>
+                    </form>
+                </div>
+                <div class="chart-container">
+                    <canvas id="availabilityChart"></canvas>
+                </div>
+            </div>
+            
         
-        
-        
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    var ctx = document.getElementById('availabilityChart').getContext('2d');
+                    var availabilityChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: {{ days|safe }},
+                            datasets: [{
+                                label: 'Working Hours',
+                                data: {{ hours|safe }},
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        stepSize: 1,
+                                        max: 24
+                                    },
+                                    title: {
+                                        display: true,
+                                        text: 'Hours'
+                                    }
+                                }
+                            }
+                        }
+                    });
+                });
+            </script>
         
         </div>
     </section>
@@ -86,5 +213,6 @@
     
 
     <script src="{% static 'javascript/dashboard.js' %}"></script>
+   
 </body>
 </html>

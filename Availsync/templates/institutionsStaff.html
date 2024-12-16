@@ -1,0 +1,228 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Admin Dashboard Panel</title>
+</head>
+<style>
+    /* Container for the institution list */
+
+/* Container for the institution list */
+.institutions-list {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    padding: 20px;
+}
+
+/* Individual institution card */
+.institution-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    max-width: 700px;
+    width: 100%;
+    margin-bottom: 30px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.institution-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Institution image */
+.institution-image {
+    width: 100%;
+    height: auto;
+    max-height: 350px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+/* Institution details container */
+.institution-details {
+    margin-top: 20px;
+}
+
+/* Label for the institution fields */
+.label {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 8px;
+    display: block;
+}
+
+/* The input-like field */
+.input-like {
+    font-size: 1.1rem;
+    color: #333;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 12px;
+    width: 100%;
+    margin-bottom: 15px;
+    display: block;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* Institution information sections */
+.institution-info {
+    margin-bottom: 15px;
+}
+
+/* Additional customizations */
+.input-like:focus {
+    border-color: #4CAF50;
+    background-color: #e9f5e0;
+    outline: none;
+}
+
+
+</style>
+<body>
+    <nav>
+        <div class="logo-name">
+            <div class="logo-image">
+                <img src="#" alt="">
+            </div>
+            <span class="logo_name">Availsync</span>
+        </div>
+        <div class="menu-items">
+            <ul class="nav-links">
+                
+                <li><a href="#">
+                    <i class="uil uil-user"></i>
+                    <span class="link-name">My Profile</span>
+                </a></li>
+                <li><a href="#">
+                    <i class="uil uil-calendar-alt"></i>
+                    <span class="link-name">Work Availability</span>
+                </a></li>
+                <li><a href="#">
+                    <i class="uil uil-users-alt"></i>
+                    <span class="link-name">Work Mates</span>
+                </a></li>
+                <li><a href="#">
+                    <i class="uil uil-building"></i>
+                    <span class="link-name">Institutions</span>
+                </a></li>
+            </ul>
+            
+            <ul class="logout-mode">
+                <li><a href="#">
+                    <i class="uil uil-signout"></i>
+                    <span class="link-name">Logout</span>
+                </a></li>
+                <li class="mode">
+                    <a href="#">
+                        <i class="uil uil-moon"></i>
+                        <span class="link-name">Dark Mode</span>
+                    </a>
+                    <div class="mode-toggle">
+                        <span class="switch"></span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+
+    <section class="dashboard">
+        <div class="top">
+            <i class="uil uil-bars sidebar-toggle"></i>
+            <span>Welcome, {{ user.first_name }} {{ user.last_name }}</span>
+
+            <div class="search-box">
+                <i class="uil uil-search"></i>
+                <input type="text" placeholder="Search here...">
+            </div>
+            <div>
+                <a href="#">
+                    <img src="{% static 'media/' %}{{ user.profile_image }}" alt="Profile" style="width: 60px; height: 60px; border-radius: 50%;">
+                    
+                </a>
+            </div>
+
+        </div>
+
+        <div class="dash-content">
+            <div class="institutions-list">
+                <!-- Check if the logged-in staff has any associated institution -->
+                {% if first_institution %}
+                    <div class="institution-card">
+                        <!-- Display institution image if available, otherwise use a default image -->
+                        <img src="{% static 'images/image.png' %}" alt="Institution Image" class="institution-image">
+                        
+                        <div class="institution-details">
+                            <!-- Display Institution Name -->
+                            <div class="institution-info">
+                                <label for="institution-name" class="label">Institution Name:</label>
+                                <div id="institution-name" class="input-like">{{ first_institution.name }}</div>
+                            </div>
+        
+                            <!-- Display Institution Address -->
+                            <div class="institution-info">
+                                <label for="institution-address" class="label">Address:</label>
+                                <div id="institution-address" class="input-like">{{ first_institution.address }}</div>
+                            </div>
+        
+                            <!-- Display Institution Phone -->
+                            <div class="institution-info">
+                                <label for="institution-phone" class="label">Phone:</label>
+                                <div id="institution-phone" class="input-like">{{ first_institution.phone }}</div>
+                            </div>
+        
+                            <!-- Display Institution Bio -->
+                            <div class="institution-info">
+                                <label for="institution-bio" class="label">Bio:</label>
+                                <div id="institution-bio" class="input-like">{{ first_institution.bio }}</div>
+                            </div>
+        
+                            <!-- Display Working Days -->
+                            <div class="institution-info">
+                                <label for="working-days" class="label">Working Days:</label>
+                                <div id="working-days" class="input-like">{{ first_institution.working_days }}</div>
+                            </div>
+        
+                            <!-- Display Working Hours -->
+                            <div class="institution-info">
+                                <label for="working-hours" class="label">Working Hours:</label>
+                                <div id="working-hours" class="input-like">{{ first_institution.working_hours }}</div>
+                            </div>
+        
+                            <!-- Display Total Staff -->
+                            <div class="institution-info">
+                                <label for="total-staff" class="label">Total Staff:</label>
+                                <div id="total-staff" class="input-like">{{ first_institution.totalstuffs }}</div>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <p>No institution available for this staff member.</p>
+                {% endif %}
+            </div>
+        </div>
+        
+        
+        
+        
+        </div>
+    </section>
+
+    
+
+    <script src="{% static 'javascript/dashboard.js' %}"></script>
+</body>
+</html>

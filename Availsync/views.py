@@ -141,3 +141,63 @@ def dashboard_staffs(request, user_id):
         'first_institution': first_institution, 
     }
     return render(request, 'staffdashboard.html', context)
+
+def availability_staffs(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    staff = get_object_or_404(Staff, user_account=user)
+    
+    if request.method == 'POST':
+        new_status = request.POST.get('status', '').lower()
+        if new_status in ['available', 'not available']:
+            staff.status = new_status
+            staff.save()
+            return redirect('availability_staffs', user_id=user_id)
+    
+    institutions = Institution.objects.filter(staff=staff) 
+    first_institution = institutions.first() 
+    
+    days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+    hours = [8, 8, 8, 8, 8]
+
+    context = {
+        'user': user,
+        'staff': staff,
+        'first_institution': first_institution, 
+        'days': days,
+        'hours': hours
+    }
+    return render(request, 'workAvailability.html', context)
+
+def Workmates(request,user_id):
+    user = get_object_or_404(User, id=user_id)
+    staff = get_object_or_404(Staff, user_account=user)
+    institutions = Institution.objects.filter(staff=staff) 
+    first_institution = institutions.first()
+    
+    # Get all staff members working in the same institutions
+    workmates = Staff.objects.filter(institution__in=institutions).distinct()
+   
+    
+    context = {
+        'user': user,
+        'staff': staff,
+        'first_institution': first_institution,
+        'workmates': workmates,
+    }
+    return render(request, 'Workmates.html', context)
+
+def Institution_staff(request,user_id):
+    user = get_object_or_404(User, id=user_id)
+    staff = get_object_or_404(Staff, user_account=user)
+    institutions = Institution.objects.filter(staff=staff) 
+    first_institution = institutions.first()
+
+    context = {
+        'user': user,
+        'staff': staff,
+        'first_institution': first_institution,
+      
+    }
+    return render(request, 'institutionsStaff.html', context)
+     
+     
