@@ -204,19 +204,32 @@ def Institution_staff(request,user_id):
      
 def get_workers(request):
     institution_name = request.GET.get('institution')
-    institution = Institution.objects.filter(name=institution_name).first()
-    
-    if institution:
-        workers = Staff.objects.filter(institution=institution)
-        workers_data = [{
+
+    if not institution_name:
+        return JsonResponse({'error': 'Institution name is required'}, status=400)
+
+    institution = Institution.objects.filter(name__iexact=institution_name).first()
+
+    if not institution:
+        return JsonResponse({'error': 'Institution not found'}, status=404)
+
+    workers = Staff.objects.filter(institution=institution)
+
+    workers_data = [
+        {
             'firstname': worker.user_account.first_name,
             'lastname': worker.user_account.last_name,
-            'status': worker.status,
+            'surname': worker.user_account.last_name,  # Surname added
+            'role': worker.user_account.role,
             'phone': worker.user_account.phone,
-            'profile_image': worker.user_account.profile_image.url if worker.user_account.profile_image else 'https://via.placeholder.com/50',
-            'workdescription': worker.workdescription
-        } for worker in workers]
+            'status': worker.status,
+            'workdescription': worker.workdescription,
+        }
+        for worker in workers
+    ]
 
-        return JsonResponse(workers_data, safe=False)
-    else:
-        return JsonResponse({'error': 'Institution not found'}, status=404)    
+    return JsonResponse(workers_data, safe=False)
+
+
+
+  
